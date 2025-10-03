@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout | 48 Hour Showers</title>
+    <script type="text/javascript" src="https://sandbox.web.squarecdn.com/v1/square.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            line-height: 1.6;
+            color: #1a1a1a;
+            background: #fafafa;
+        }
+
+        .nav {
+            background: rgba(255, 255, 255, 0.98);
+            padding: 25px 40px;
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid #e5e5e5;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 22px;
+            font-weight: 600;
+            color: #1a1a1a;
+            letter-spacing: -0.5px;
+        }
+
+        .logo span {
+            color: #2d5f4f;
+        }
+
+        .checkout-container {
+            max-width: 800px;
+            margin: 60px auto;
+            padding: 0 40px;
+        }
+
+        .checkout-card {
+            background: white;
+            border-radius: 8px;
+            padding: 40px;
+            border: 1px solid #e5e5e5;
+            margin-bottom: 30px;
+        }
+
+        .checkout-title {
+            font-size: 32px;
+            font-weight: 600;
+            margin-bottom: 30px;
+            letter-spacing: -1px;
+        }
+
+        .order-summary {
+            background: #fafafa;
+            padding: 24px;
+            border-radius: 6px;
+            margin-bottom: 30px;
+        }
+
+        .summary-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 16px;
+            color: #1a1a1a;
+        }
+
+        .summary-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 12px;
+            color: #4a4a4a;
+        }
+
+        .summary-item.total {
+            font-size: 20px;
+            font-weight: 600;
+            color: #1a1a1a;
+            padding-top: 16px;
+            border-top: 2px solid #e5e5e5;
+            margin-top: 16px;
+        }
+
+        .deposit-highlight {
+            background: #e8f5f1;
+            padding: 20px;
+            border-radius: 6px;
+            margin-bottom: 30px;
+            border-left: 4px solid #2d5f4f;
+        }
+
+        .deposit-highlight p {
+            color: #1a1a1a;
+            font-size: 15px;
+            line-height: 1.6;
+        }
+
+        .deposit-highlight strong {
+            color: #2d5f4f;
+            font-size: 18px;
+        }
+
+        .form-section {
+            margin-bottom: 30px;
+        }
+
+        .form-label {
+            display: block;
+            font-weight: 500;
+            margin-bottom: 8px;
+            color: #1a1a1a;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 14px;
+            border: 1px solid #e5e5e5;
+            border-radius: 6px;
+            font-size: 15px;
+            font-family: inherit;
+            margin-bottom: 16px;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: #2d5f4f;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+
+        #card-container {
+            margin-bottom: 24px;
+        }
+
+        #payment-status-container {
+            margin-top: 20px;
+            padding: 16px;
+            border-radius: 6px;
+            display: none;
+        }
+
+        #payment-status-container.success {
+            background: #e8f5f1;
+            border: 1px solid #2d5f4f;
+            color: #1a1a1a;
+            display: block;
+        }
+
+        #payment-status-container.error {
+            background: #fee;
+            border: 1px solid #c00;
+            color: #c00;
+            display: block;
+        }
+
+        .pay-button {
+            width: 100%;
+            background: #2d5f4f;
+            color: white;
+            padding: 18px;
+            font-size: 16px;
+            font-weight: 600;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s;
+            letter-spacing: 0.5px;
+        }
+
+        .pay-button:hover:not(:disabled) {
+            background: #234639;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(45, 95, 79, 0.3);
+        }
+
+        .pay-button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+
+        footer {
+            background: #1a1a1a;
+            color: #a0a0a0;
+            padding: 60px 40px;
+            text-align: center;
+            border-top: 1px solid #333;
+            margin-top: 100px;
+        }
+
+        footer p {
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+
+        .scheduling-info {
+            background: #fafafa;
+            padding: 20px;
+            border-radius: 6px;
+            margin-bottom: 20px;
+        }
+
+        .scheduling-info h3 {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 12px;
+            color: #1a1a1a;
+        }
+
+        .scheduling-info p {
+            color: #4a4a4a;
+            font-size: 14px;
+            margin-bottom: 8px;
+        }
+
+        @media (max-width: 768px) {
+            .checkout-container {
+                margin: 40px auto;
+                padding: 0 20px;
+            }
+
+            .checkout-card {
+                padding: 24px;
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="nav">
+        <div class="logo">48 HOUR <span>SHOWERS</span></div>
+    </nav>
+
+    <div class="checkout-container">
+        <div class="checkout-card">
+            <h1 class="checkout-title">Checkout</h1>
+
+            <div class="order-summary" id="orderSummary">
+                <!-- Order details will be inserted here -->
+            </div>
+
+            <div class="deposit-highlight">
+                <p><strong>Deposit Due Today: $175.00</strong></p>
+                <p>The remaining balance will be due after successful installation.</p>
+            </div>
+
+            <div class="scheduling-info" id="schedulingInfo">
+                <!-- Scheduling info will be inserted here -->
+            </div>
+
+            <form id="payment-form">
+                <div class="form-section">
+                    <h3 style="font-size: 20px; margin-bottom: 20px; font-weight: 600;">Contact Information</h3>
+                    
+                    <label class="form-label" for="name">Full Name</label>
+                    <input type="text" id="name" class="form-input" required>
+                    
+                    <label class="form-label" for="email">Email</label>
+                    <input type="email" id="email" class="form-input" required>
+                    
+                    <label class="form-label" for="phone">Phone Number</label>
+                    <input type="tel" id="phone" class="form-input" required>
+                    
+                    <label class="form-label" for="address">Installation Address</label>
+                    <input type="text" id="address" class="form-input" placeholder="Street Address" required>
+                    
+                    <div class="form-row">
+                        <input type="text" id="city" class="form-input" placeholder="City" required>
+                        <input type="text" id="state" class="form-input" placeholder="State" required>
+                    </div>
+                    
+                    <input type="text" id="zip" class="form-input" placeholder="ZIP Code" required>
+                </div>
+
+                <div class="form-section">
+                    <h3 style="font-size: 20px; margin-bottom: 20px; font-weight: 600;">Payment Information</h3>
+                    <div id="card-container"></div>
+                </div>
+
+                <div id="payment-status-container"></div>
+
+                <button type="submit" class="pay-button" id="card-button">
+                    Pay $175.00 Deposit
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2024 48 Hour Showers. All rights reserved.</p>
+            <p>Questions? Contact us at info@48hourshowers.com</p>
+        </div>
+    </footer>
+
+    <script>
+        // Square credentials
+        const appId = 'sandbox-sq0idb-rvtbECoQ-g3etkWLLKvuzA';
+        const locationId = 'LRHNW39YAV8CQ';
+
+        let card;
+
+        // Load order data
+        function loadOrderData() {
+            const orderData = JSON.parse(localStorage.getItem('orderData') || '{}');
+            
+            if (!orderData.cart || orderData.cart.length === 0) {
+                window.location.href = 'cart.html';
+                return;
+            }
+
+            // Display order summary
+            const summaryHTML = `
+                <h3 class="summary-title">Order Summary</h3>
+                ${orderData.cart.map(item => `
+                    <div class="summary-item">
+                        <span>${item.name}</span>
+                        <span>$${item.price}</span>
+                    </div>
+                `).join('')}
+                ${orderData.discount > 0 ? `
+                    <div class="summary-item" style="color: #2d5f4f;">
+                        <span>Flexible Scheduling Discount</span>
+                        <span>-$${orderData.discount}</span>
+                    </div>
+                ` : ''}
+                <div class="summary-item total">
+                    <span>Total</span>
+                    <span>$${orderData.total}</span>
+                </div>
+            `;
+            document.getElementById('orderSummary').innerHTML = summaryHTML;
+
+            // Display scheduling info
+            let schedulingHTML = '<h3>Installation Details</h3>';
+            if (orderData.scheduling.flexible) {
+                schedulingHTML += '<p><strong>Flexible Scheduling:</strong> We\'ll contact you within 48 hours to schedule your installation.</p>';
+            } else {
+                const date = new Date(orderData.scheduling.date);
+                const dateStr = date.toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+                const timeSlot = orderData.scheduling.time === 'morning' ? 'Morning (8 AM - 12 PM)' : 'Afternoon (12 PM - 4 PM)';
+                schedulingHTML += `<p><strong>Date:</strong> ${dateStr}</p><p><strong>Time:</strong> ${timeSlot}</p>`;
+            }
+            document.getElementById('schedulingInfo').innerHTML = schedulingHTML;
+        }
+
+        // Initialize Square payment form
+        async function initializeCard(payments) {
+            card = await payments.card();
+            await card.attach('#card-container');
+            return card;
+        }
+
+        // Handle payment form submission
+        async function handlePaymentMethodSubmission(event, card) {
+            event.preventDefault();
+
+            const cardButton = document.getElementById('card-button');
+            const statusContainer = document.getElementById('payment-status-container');
+
+            try {
+                // Disable button while processing
+                cardButton.disabled = true;
+                statusContainer.style.display = 'none';
+
+                // Tokenize the card
+                const result = await card.tokenize();
+                if (result.status === 'OK') {
+                    // Get customer information
+                    const customerData = {
+                        name: document.getElementById('name').value,
+                        email: document.getElementById('email').value,
+                        phone: document.getElementById('phone').value,
+                        address: document.getElementById('address').value,
+                        city: document.getElementById('city').value,
+                        state: document.getElementById('state').value,
+                        zip: document.getElementById('zip').value
+                    };
+
+                    // In production, you would send this to your server
+                    // For now, we'll simulate success
+                    console.log('Payment token:', result.token);
+                    console.log('Customer data:', customerData);
+
+                    // Store customer data
+                    const orderData = JSON.parse(localStorage.getItem('orderData') || '{}');
+                    orderData.customer = customerData;
+                    orderData.paymentToken = result.token;
+                    localStorage.setItem('orderData', JSON.stringify(orderData));
+
+                    // Show success message
+                    statusContainer.className = 'success';
+                    statusContainer.innerHTML = `
+                        <strong>Payment Successful!</strong><br>
+                        Your $175 deposit has been processed. We'll contact you shortly to confirm your installation.
+                    `;
+
+                    // Redirect to confirmation page after delay
+                    setTimeout(() => {
+                        // Clear cart
+                        localStorage.removeItem('cart');
+                        alert('Thank you for your order! We will contact you shortly to confirm your installation details.');
+                        window.location.href = 'index.html';
+                    }, 3000);
+
+                } else {
+                    let errorMessage = 'Payment failed. Please try again.';
+                    if (result.errors) {
+                        errorMessage = result.errors.map(error => error.message).join(', ');
+                    }
+                    
+                    statusContainer.className = 'error';
+                    statusContainer.textContent = errorMessage;
+                    cardButton.disabled = false;
+                }
+            } catch (e) {
+                console.error('Payment error:', e);
+                statusContainer.className = 'error';
+                statusContainer.textContent = 'An error occurred. Please try again.';
+                cardButton.disabled = false;
+            }
+        }
+
+        // Initialize everything
+        document.addEventListener('DOMContentLoaded', async function() {
+            loadOrderData();
+
+            if (!window.Square) {
+                throw new Error('Square.js failed to load properly');
+            }
+
+            let payments;
+            try {
+                payments = window.Square.payments(appId, locationId);
+            } catch(e) {
+                console.error('Square payments initialization failed:', e);
+                document.getElementById('payment-status-container').className = 'error';
+                document.getElementById('payment-status-container').textContent = 
+                    'Payment system failed to initialize. Please refresh the page or contact support.';
+                return;
+            }
+
+            try {
+                card = await initializeCard(payments);
+            } catch (e) {
+                console.error('Card initialization failed:', e);
+                return;
+            }
+
+            const paymentForm = document.getElementById('payment-form');
+            paymentForm.addEventListener('submit', async (event) => {
+                await handlePaymentMethodSubmission(event, card);
+            });
+        });
+    </script>
+</body>
+</html>
