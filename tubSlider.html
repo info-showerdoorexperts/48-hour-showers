@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sliding Tub Door | 48 Hour Showers</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            line-height: 1.6;
+            color: #1a1a1a;
+            background: #ffffff;
+        }
+
+        .nav {
+            background: rgba(255, 255, 255, 0.98);
+            padding: 25px 40px;
+            backdrop-filter: blur(10px);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #e5e5e5;
+        }
+
+        .logo {
+            font-size: 22px;
+            font-weight: 600;
+            color: #1a1a1a;
+            letter-spacing: -0.5px;
+            cursor: pointer;
+        }
+
+        .logo span {
+            color: #2d5f4f;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 45px;
+            list-style: none;
+            align-items: center;
+        }
+
+        .nav-links a {
+            color: #4a4a4a;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 15px;
+            transition: color 0.3s;
+            letter-spacing: 0.3px;
+        }
+
+        .nav-links a:hover {
+            color: #2d5f4f;
+        }
+
+        .cart-icon {
+            position: relative;
+            cursor: pointer;
+            padding: 8px 16px;
+            border: 1px solid #e5e5e5;
+            border-radius: 6px;
+            transition: all 0.3s;
+            font-size: 14px;
+            color: #1a1a1a;
+        }
+
+        .cart-icon:hover {
+            border-color: #1a1a1a;
+            background: #fafafa;
+        }
+
+        .cart-count {
+            position: absolute;
+            top: -6px;
+            right: -6px;
+            background: #1a1a1a;
+            color: white;
+            border-radius: 10px;
+            padding: 2px 6px;
+            font-size: 11px;
+            font-weight: 600;
+        }
+
+        .product-container {
+            max-width: 1200px;
+            margin: 60px auto;
+            padding: 0 40px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 80px;
+        }
+
+        .product-gallery {
+            position: sticky;
+            top: 120px;
+            height: fit-content;
+        }
+
+        .main-image {
+            width: 100%;
+            height: 600px;
+            background: #f5f5f5;
+            border-radius: 8px;
+            overflow: hidden;
+            margin-bottom: 20px;
+        }
+
+        .main-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .thumbnail-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 12px;
+        }
+
+        .thumbnail {
+            height: 100px;
+            background: #f5f5f5;
+            border-radius: 6px;
+            cursor: pointer;
+            border: 2px solid transparent;
+            transition: all 0.3s;
+            overflow: hidden;
+        }
+
+        .thumbnail img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .thumbnail:hover {
+            border-color: #2d5f4f;
+        }
+
+        .thumbnail.active {
+            border-color: #2d5f4f;
+        }
+
+        .product-details {
+            padding-top: 20px;
+        }
+
+        .breadcrumb {
+            color: #6a6a6a;
+            font-size: 14px;
+            margin-bottom: 24px;
+        }
+
+        .breadcrumb a {
+            color: #6a6a6a;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .breadcrumb a:hover {
+            color: #2d5f4f;
+        }
+
+        .product-title {
+            font-size: 42px;
+            font-weight: 600;
+            letter-spacing: -1px;
+            margin-bottom: 16px;
+            color: #1a1a1a;
+        }
+
+        .product-price {
+            font-size: 48px;
+            font-weight: 600;
+            color: #2d5f4f;
+            margin-bottom: 32px;
+            letter-spacing: -2px;
+        }
+
+        .product-description {
+            font-size: 18px;
+            color: #4a4a4a;
+            line-height: 1.8;
+            margin-bottom: 40px;
+            padding-bottom: 40px;
+            border-bottom: 1px solid #e5e5e5;
+        }
+
+        .specs-section {
+            margin-bottom: 40px;
+        }
+
+        .specs-title {
+            font-size: 22px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            color: #1a1a1a;
+        }
+
+        .spec-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 16px 0;
+            border-bottom: 1px solid #e5e5e5;
+        }
+
+        .spec-label {
+            color: #6a6a6a;
+            font-weight: 500;
+        }
+
+        .spec-value {
+            color: #1a1a1a;
+            font-weight: 500;
+        }
+
+        .add-to-cart-btn {
+            width: 100%;
+            background: #2d5f4f;
+            color: white;
+            padding: 20px;
+            font-size: 18px;
+            font-weight: 600;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s;
+            letter-spacing: 0.5px;
+            margin-bottom: 16px;
+        }
+
+        .add-to-cart-btn:hover {
+            background: #234639;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(45, 95, 79, 0.3);
+        }
+
+        .features-section {
+            margin-top: 40px;
+            padding-top: 40px;
+            border-top: 1px solid #e5e5e5;
+        }
+
+        .features-title {
+            font-size: 22px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            color: #1a1a1a;
+        }
+
+        .feature-list {
+            list-style: none;
+        }
+
+        .feature-item {
+            padding: 12px 0;
+            color: #4a4a4a;
+            display: flex;
+            align-items: start;
+            gap: 12px;
+        }
+
+        .feature-item::before {
+            content: "✓";
+            color: #2d5f4f;
+            font-weight: bold;
+            font-size: 18px;
+        }
+
+        .deposit-note {
+            background: #fafafa;
+            padding: 20px;
+            border-radius: 6px;
+            margin-bottom: 20px;
+            border-left: 4px solid #2d5f4f;
+        }
+
+        .deposit-note p {
+            color: #4a4a4a;
+            font-size: 15px;
+            line-height: 1.6;
+        }
+
+        footer {
+            background: #1a1a1a;
+            color: #a0a0a0;
+            padding: 60px 40px;
+            text-align: center;
+            border-top: 1px solid #333;
+            margin-top: 100px;
+        }
+
+        footer p {
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+
+        .success-message {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: #2d5f4f;
+            color: white;
+            padding: 20px 30px;
+            border-radius: 6px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+            display: none;
+            align-items: center;
+            gap: 12px;
+            animation: slideIn 0.3s ease;
+        }
+
+        .success-message.show {
+            display: flex;
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateX(400px);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        @media (max-width: 968px) {
+            .product-container {
+                grid-template-columns: 1fr;
+                gap: 40px;
+                margin: 40px auto;
+            }
+
+            .product-gallery {
+                position: relative;
+                top: 0;
+            }
+
+            .main-image {
+                height: 400px;
+            }
+
+            .product-title {
+                font-size: 32px;
+            }
+
+            .product-price {
+                font-size: 36px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="nav">
+        <div class="logo" onclick="window.location.href='index.html'">48 HOUR <span>SHOWERS</span></div>
+        <ul class="nav-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="index.html#products">Products</a></li>
+            <li><a href="index.html#about">About</a></li>
+            <li>
+                <div class="cart-icon" onclick="window.location.href='cart.html'">
+                    Cart <span class="cart-count" id="cartCount">0</span>
+                </div>
+            </li>
+        </ul>
+    </nav>
+
+    <div class="product-container">
+        <div class="product-gallery">
+            <div class="main-image">
+                <img src="images/tubSlider.jpg" alt="Sliding Tub Door" id="mainImage">
+            </div>
+            <div class="thumbnail-grid">
+                <div class="thumbnail active" onclick="changeImage('images/tubSlider.jpg', this)">
+                    <img src="images/tubSlider.jpg" alt="View 1">
+                </div>
+                <div class="thumbnail" onclick="changeImage('images/tubSlider-2.jpg', this)">
+                    <img src="images/tubSlider-2.jpg" alt="View 2">
+                </div>
+                <div class="thumbnail" onclick="changeImage('images/tubSlider-3.jpg', this)">
+                    <img src="images/tubSlider-3.jpg" alt="View 3">
+                </div>
+                <div class="thumbnail" onclick="changeImage('images/tubSlider-4.jpg', this)">
+                    <img src="images/tubSlider-4.jpg" alt="View 4">
+                </div>
+            </div>
+        </div>
+
+        <div class="product-details">
+            <div class="breadcrumb">
+                <a href="index.html">Home</a> / <a href="index.html#products">Products</a> / Sliding Tub Door
+            </div>
+
+            <h1 class="product-title">Sliding Tub Door</h1>
+            <div class="product-price">$599</div>
+
+            <div class="product-description">
+                Classic sliding tub door designed specifically for standard bathtub openings. Features bypass sliding design with smooth operation and premium tempered glass. An affordable upgrade from shower curtains that adds elegance and functionality to any bathroom.
+            </div>
+
+            <div class="deposit-note">
+                <p><strong>Low-Risk Deposit:</strong> Only $175 deposit required now. Remaining balance due after successful installation. If the door doesn't fit your space, you only lose the deposit—not the full amount.</p>
+            </div>
+
+            <button class="add-to-cart-btn" onclick="addToCart()">Add to Cart</button>
+
+            <div class="specs-section">
+                <h3 class="specs-title">Specifications</h3>
+                <div class="spec-item">
+                    <span class="spec-label">Width Range</span>
+                    <span class="spec-value">56" - 60"</span>
+                </div>
+                <div class="spec-item">
+                    <span class="spec-label">Height</span>
+                    <span class="spec-value">57"</span>
+                </div>
+                <div class="spec-item">
+                    <span class="spec-label">Glass Thickness</span>
+                    <span class="spec-value">1/4"</span>
+                </div>
+                <div class="spec-item">
+                    <span class="spec-label">Glass Type</span>
+                    <span class="spec-value">Tempered Safety Glass</span>
+                </div>
+                <div class="spec-item">
+                    <span class="spec-label">Finish Options</span>
+                    <span class="spec-value">Chrome, Brushed Nickel</span>
+                </div>
+                <div class="spec-item">
+                    <span class="spec-label">Installation Time</span>
+                    <span class="spec-value">Within 48 Hours</span>
+                </div>
+            </div>
+
+            <div class="features-section">
+                <h3 class="features-title">Key Features</h3>
+                <ul class="feature-list">
+                    <li class="feature-item">Tempered safety glass for durability and safety</li>
+                    <li class="feature-item">Bypass sliding design for space efficiency</li>
+                    <li class="feature-item">Adjustable width fits most standard tubs</li>
+                    <li class="feature-item">Towel bar handle for convenience</li>
+                    <li class="feature-item">Bottom track for stable operation</li>
+                    <li class="feature-item">Professional installation included</li>
+                    <li class="feature-item">Lifetime manufacturer warranty on glass</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="success-message" id="successMessage">
+        <span style="font-size: 24px;">✓</span>
+        <span>Added to cart!</span>
+    </div>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2024 48 Hour Showers. All rights reserved.</p>
+            <p>Questions? Contact us at info@48hourshowers.com</p>
+        </div>
+    </footer>
+
+    <script>
+        // Product data
+        const product = {
+            id: 'tub-slider',
+            name: 'Sliding Tub Door',
+            price: 599,
+            image: 'images/tubSlider.jpg'
+        };
+
+        // Update cart count on page load
+        function updateCartCount() {
+            const cart = JSON.parse(localStorage.getItem('cart') || '[]');
+            document.getElementById('cartCount').textContent = cart.length;
+        }
+
+        updateCartCount();
+
+        // Change main image when thumbnail is clicked
+        function changeImage(imageSrc, thumbnail) {
+            document.getElementById('mainImage').src = imageSrc;
+            
+            // Update active thumbnail
+            document.querySelectorAll('.thumbnail').forEach(t => t.classList.remove('active'));
+            thumbnail.classList.add('active');
+        }
+
+        // Add to cart functionality
+        function addToCart() {
+            // Get existing cart
+            let cart = JSON.parse(localStorage.getItem('cart') || '[]');
+            
+            // Check if product already in cart
+            const existingItem = cart.find(item => item.id === product.id);
+            
+            if (existingItem) {
+                // Product already in cart - could increase quantity here if you want
+                showSuccessMessage();
+            } else {
+                // Add new product to cart
+                cart.push(product);
+                localStorage.setItem('cart', JSON.stringify(cart));
+                updateCartCount();
+                showSuccessMessage();
+            }
+        }
+
+        // Show success message
+        function showSuccessMessage() {
+            const message = document.getElementById('successMessage');
+            message.classList.add('show');
+            
+            setTimeout(() => {
+                message.classList.remove('show');
+            }, 3000);
+        }
+    </script>
+</body>
+</html>
