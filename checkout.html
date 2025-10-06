@@ -40,6 +40,54 @@
             color: #2d5f4f;
         }
 
+        .nav-links {
+            display: flex;
+            gap: 45px;
+            list-style: none;
+            align-items: center;
+        }
+
+        .nav-links a {
+            color: #4a4a4a;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 15px;
+            transition: color 0.3s;
+            letter-spacing: 0.3px;
+        }
+
+        .nav-links a:hover {
+            color: #2d5f4f;
+        }
+
+        .cart-icon {
+            position: relative;
+            cursor: pointer;
+            padding: 8px 16px;
+            border: 1px solid #e5e5e5;
+            border-radius: 6px;
+            transition: all 0.3s;
+            font-size: 14px;
+            color: #1a1a1a;
+        }
+
+        .cart-icon:hover {
+            border-color: #1a1a1a;
+            background: #fafafa;
+        }
+
+        .cart-count {
+            position: absolute;
+            top: -6px;
+            right: -6px;
+            background: #1a1a1a;
+            color: white;
+            border-radius: 10px;
+            padding: 2px 6px;
+            font-size: 11px;
+            font-weight: 600;
+        }
+
         .checkout-container {
             max-width: 800px;
             margin: 60px auto;
@@ -285,17 +333,30 @@
                     <input type="email" id="email" class="form-input" required>
                     
                     <label class="form-label" for="phone">Phone Number</label>
-                    <input type="tel" id="phone" class="form-input" required>
+                    <input type="tel" id="phone" class="form-input" placeholder="(555) 123-4567" required>
+                    <span class="error-message" id="phoneError"></span>
                     
                     <label class="form-label" for="address">Installation Address</label>
                     <input type="text" id="address" class="form-input" placeholder="Street Address" required>
                     
                     <div class="form-row">
-                        <input type="text" id="city" class="form-input" placeholder="City" required>
-                        <input type="text" id="state" class="form-input" placeholder="State" required>
+                        <div>
+                            <input type="text" id="city" class="form-input" placeholder="City" required>
+                        </div>
+                        <div>
+                            <select id="state" class="form-input" required>
+                                <option value="">Select State</option>
+                                <option value="MD">Maryland</option>
+                                <option value="PA">Pennsylvania</option>
+                                <option value="WV">West Virginia</option>
+                                <option value="VA">Virginia</option>
+                                <option value="DC">Washington DC</option>
+                            </select>
+                        </div>
                     </div>
                     
-                    <input type="text" id="zip" class="form-input" placeholder="ZIP Code" required>
+                    <input type="text" id="zip" class="form-input" placeholder="ZIP Code" required maxlength="5" pattern="[0-9]{5}">
+                    <span class="error-message" id="zipError"></span>
                 </div>
 
                 <div class="form-section">
@@ -456,6 +517,10 @@
         // Initialize everything
         document.addEventListener('DOMContentLoaded', async function() {
             loadOrderData();
+            
+            // Update cart count
+            const cart = JSON.parse(localStorage.getItem('cart') || '[]');
+            document.getElementById('cartCount').textContent = cart.length;
 
             if (!window.Square) {
                 throw new Error('Square.js failed to load properly');
