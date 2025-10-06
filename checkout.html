@@ -244,7 +244,17 @@
 </head>
 <body>
     <nav class="nav">
-        <div class="logo">48 HOUR <span>SHOWERS</span></div>
+        <div class="logo" onclick="window.location.href='index.html'" style="cursor: pointer;">48 HOUR <span>SHOWERS</span></div>
+        <ul class="nav-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="index.html#products">Products</a></li>
+            <li><a href="index.html#about">About</a></li>
+            <li>
+                <div class="cart-icon" onclick="window.location.href='cart.html'">
+                    Cart <span class="cart-count" id="cartCount">0</span>
+                </div>
+            </li>
+        </ul>
     </nav>
 
     <div class="checkout-container">
