@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Confirmation | 48 Hour Showers</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            line-height: 1.6;
+            color: #1a1a1a;
+            background: #fafafa;
+        }
+
+        .nav {
+            background: rgba(255, 255, 255, 0.98);
+            padding: 25px 40px;
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid #e5e5e5;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 22px;
+            font-weight: 600;
+            color: #1a1a1a;
+            letter-spacing: -0.5px;
+            cursor: pointer;
+        }
+
+        .logo span {
+            color: #2d5f4f;
+        }
+
+        .confirmation-container {
+            max-width: 800px;
+            margin: 60px auto;
+            padding: 0 40px;
+        }
+
+        .success-icon {
+            width: 80px;
+            height: 80px;
+            background: #2d5f4f;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 30px;
+            font-size: 40px;
+            color: white;
+        }
+
+        .confirmation-card {
+            background: white;
+            border-radius: 8px;
+            padding: 40px;
+            border: 1px solid #e5e5e5;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .confirmation-title {
+            font-size: 32px;
+            font-weight: 600;
+            margin-bottom: 16px;
+            letter-spacing: -1px;
+            color: #1a1a1a;
+        }
+
+        .confirmation-subtitle {
+            font-size: 18px;
+            color: #6a6a6a;
+            margin-bottom: 40px;
+        }
+
+        .details-card {
+            background: white;
+            border-radius: 8px;
+            padding: 40px;
+            border: 1px solid #e5e5e5;
+            margin-bottom: 30px;
+            text-align: left;
+        }
+
+        .section-title {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            color: #1a1a1a;
+            padding-bottom: 12px;
+            border-bottom: 2px solid #e5e5e5;
+        }
+
+        .detail-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 12px 0;
+            border-bottom: 1px solid #f5f5f5;
+        }
+
+        .detail-row:last-child {
+            border-bottom: none;
+        }
+
+        .detail-label {
+            color: #6a6a6a;
+            font-weight: 500;
+        }
+
+        .detail-value {
+            color: #1a1a1a;
+            font-weight: 500;
+            text-align: right;
+        }
+
+        .product-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 16px 0;
+            border-bottom: 1px solid #f5f5f5;
+        }
+
+        .highlight-box {
+            background: #e8f5f1;
+            padding: 20px;
+            border-radius: 6px;
+            margin: 20px 0;
+            border-left: 4px solid #2d5f4f;
+        }
+
+        .highlight-box p {
+            color: #1a1a1a;
+            margin-bottom: 8px;
+        }
+
+        .highlight-box strong {
+            color: #2d5f4f;
+        }
+
+        .payment-total {
+            display: flex;
+            justify-content: space-between;
+            font-size: 24px;
+            font-weight: 600;
+            padding-top: 20px;
+            margin-top: 20px;
+            border-top: 2px solid #e5e5e5;
+            color: #2d5f4f;
+        }
+
+        .home-button {
+            display: inline-block;
+            background: #2d5f4f;
+            color: white;
+            padding: 16px 48px;
+            font-size: 16px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s;
+            text-decoration: none;
+            margin-top: 20px;
+        }
+
+        .home-button:hover {
+            background: #234639;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(45, 95, 79, 0.3);
+        }
+
+        footer {
+            background: #1a1a1a;
+            color: #a0a0a0;
+            padding: 60px 40px;
+            text-align: center;
+            border-top: 1px solid #333;
+            margin-top: 100px;
+        }
+
+        footer p {
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+
+        @media (max-width: 768px) {
+            .confirmation-container {
+                margin: 40px auto;
+                padding: 0 20px;
+            }
+
+            .confirmation-card, .details-card {
+                padding: 24px;
+            }
+
+            .confirmation-title {
+                font-size: 24px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="nav">
+        <div class="logo" onclick="window.location.href='index.html'">48 HOUR <span>SHOWERS</span></div>
+    </nav>
+
+    <div class="confirmation-container">
+        <div class="confirmation-card">
+            <div class="success-icon">✓</div>
+            <h1 class="confirmation-title">Payment Successful!</h1>
+            <p class="confirmation-subtitle">Thank you for your order. Your deposit has been processed.</p>
+        </div>
+
+        <div class="details-card">
+            <h2 class="section-title">Order Details</h2>
+            <div id="orderItems"></div>
+            <div class="payment-total">
+                <span>Total Order Value</span>
+                <span id="totalAmount"></span>
+            </div>
+        </div>
+
+        <div class="details-card">
+            <h2 class="section-title">Payment Information</h2>
+            <div class="highlight-box">
+                <p><strong>Deposit Paid: $175.00</strong></p>
+                <p>Remaining balance of <strong id="remainingBalance"></strong> due after successful installation.</p>
+            </div>
+            <div class="detail-row">
+                <span class="detail-label">Payment ID</span>
+                <span class="detail-value" id="paymentId"></span>
+            </div>
+        </div>
+
+        <div class="details-card">
+            <h2 class="section-title">Installation Details</h2>
+            <div id="schedulingInfo"></div>
+        </div>
+
+        <div class="details-card">
+            <h2 class="section-title">Customer Information</h2>
+            <div class="detail-row">
+                <span class="detail-label">Name</span>
+                <span class="detail-value" id="customerName"></span>
+            </div>
+            <div class="detail-row">
+                <span class="detail-label">Email</span>
+                <span class="detail-value" id="customerEmail"></span>
+            </div>
+            <div class="detail-row">
+                <span class="detail-label">Phone</span>
+                <span class="detail-value" id="customerPhone"></span>
+            </div>
+            <div class="detail-row">
+                <span class="detail-label">Installation Address</span>
+                <span class="detail-value" id="customerAddress"></span>
+            </div>
+        </div>
+
+        <div style="text-align: center;">
+            <p style="color: #6a6a6a; margin-bottom: 20px;">
+                We'll contact you within 24 hours to confirm your installation details.
+                A confirmation email has been sent to your email address.
+            </p>
+            <a href="index.html" class="home-button">Return to Home</a>
+        </div>
+    </div>
+
+    <footer>
+        <div>
+            <p>&copy; 2024 48 Hour Showers. All rights reserved.</p>
+            <p>Questions? Contact us at info@48hourshowers.com</p>
+        </div>
+    </footer>
+
+    <script>
+        function loadConfirmationData() {
+            const orderData = JSON.parse(localStorage.getItem('orderData') || '{}');
+            
+            // Redirect if no order data
+            if (!orderData.cart || !orderData.customer) {
+                window.location.href = 'index.html';
+                return;
+            }
+
+            // Display order items
+            const orderItemsHTML = orderData.cart.map(item => `
+                <div class="product-item">
+                    <span>${item.name}</span>
+                    <span>$${item.price}</span>
+                </div>
+            `).join('');
+            
+            if (orderData.discount > 0) {
+                document.getElementById('orderItems').innerHTML = orderItemsHTML + `
+                    <div class="product-item" style="color: #2d5f4f;">
+                        <span>Flexible Scheduling Discount</span>
+                        <span>-$${orderData.discount}</span>
+                    </div>
+                `;
+            } else {
+                document.getElementById('orderItems').innerHTML = orderItemsHTML;
+            }
+
+            // Display totals
+            document.getElementById('totalAmount').textContent = `$${orderData.total}`;
+            document.getElementById('remainingBalance').textContent = `$${orderData.total - 175}`;
+
+            // Display payment ID
+            const paymentId = orderData.paymentId || 'Processing...';
+            document.getElementById('paymentId').textContent = paymentId;
+
+            // Display scheduling info
+            let schedulingHTML = '';
+            if (orderData.scheduling.flexible) {
+                schedulingHTML = `
+                    <div class="highlight-box">
+                        <p><strong>Flexible Scheduling Selected</strong></p>
+                        <p>You saved $50! We'll contact you within 48 hours to schedule your installation at a convenient time.</p>
+                    </div>
+                `;
+            } else {
+                const date = new Date(orderData.scheduling.date);
+                const dateStr = date.toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+                const timeSlot = orderData.scheduling.time === 'morning' ? 'Morning (8 AM - 12 PM)' : 'Afternoon (12 PM - 4 PM)';
+                schedulingHTML = `
+                    <div class="detail-row">
+                        <span class="detail-label">Preferred Date</span>
+                        <span class="detail-value">${dateStr}</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">Preferred Time</span>
+                        <span class="detail-value">${timeSlot}</span>
+                    </div>
+                `;
+            }
+            document.getElementById('schedulingInfo').innerHTML = schedulingHTML;
+
+            // Display customer info
+            document.getElementById('customerName').textContent = orderData.customer.name;
+            document.getElementById('customerEmail').textContent = orderData.customer.email;
+            document.getElementById('customerPhone').textContent = orderData.customer.phone;
+            document.getElementById('customerAddress').textContent = 
+                `${orderData.customer.address}, ${orderData.customer.city}, ${orderData.customer.state} ${orderData.customer.zip}`;
+
+            // Clear cart and order data after display
+            setTimeout(() => {
+                localStorage.removeItem('cart');
+                localStorage.removeItem('orderData');
+            }, 1000);
+        }
+
+        document.addEventListener('DOMContentLoaded', loadConfirmationData);
+    </script>
+</body>
+</html>
