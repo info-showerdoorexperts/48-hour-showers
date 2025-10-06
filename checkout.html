@@ -23,10 +23,13 @@
             background: rgba(255, 255, 255, 0.98);
             padding: 25px 40px;
             backdrop-filter: blur(10px);
-            border-bottom: 1px solid #e5e5e5;
+            position: sticky;
+            top: 0;
+            z-index: 100;
             display: flex;
-            justify-content: center;
+            justify-content: space-between;
             align-items: center;
+            border-bottom: 1px solid #e5e5e5;
         }
 
         .logo {
@@ -182,6 +185,22 @@
         .form-input:focus {
             outline: none;
             border-color: #2d5f4f;
+        }
+
+        .form-input.error {
+            border-color: #c00;
+        }
+
+        .error-message {
+            color: #c00;
+            font-size: 13px;
+            display: none;
+            margin-top: -12px;
+            margin-bottom: 16px;
+        }
+
+        .error-message.show {
+            display: block;
         }
 
         .form-row {
@@ -445,6 +464,51 @@
             const cardButton = document.getElementById('card-button');
             const statusContainer = document.getElementById('payment-status-container');
 
+            // Validate all fields before processing
+            const email = document.getElementById('email').value;
+            const phone = document.getElementById('phone').value;
+            const zip = document.getElementById('zip').value;
+            const state = document.getElementById('state').value;
+
+            let hasErrors = false;
+
+            if (!validateEmail(email)) {
+                document.getElementById('email').classList.add('error');
+                hasErrors = true;
+            }
+
+            if (!validatePhone(phone)) {
+                document.getElementById('phone').classList.add('error');
+                document.getElementById('phoneError').textContent = 'Please enter a valid 10-digit phone number';
+                document.getElementById('phoneError').classList.add('show');
+                hasErrors = true;
+            }
+
+            if (!validateZip(zip)) {
+                document.getElementById('zip').classList.add('error');
+                document.getElementById('zipError').textContent = 'Please enter a valid 5-digit ZIP code';
+                document.getElementById('zipError').classList.add('show');
+                hasErrors = true;
+            }
+
+            if (!state) {
+                document.getElementById('state').classList.add('error');
+                hasErrors = true;
+            }
+
+            if (!validateServiceArea(state, zip)) {
+                document.getElementById('zip').classList.add('error');
+                document.getElementById('zipError').textContent = 'We currently only serve MD, PA, WV, VA, and DC';
+                document.getElementById('zipError').classList.add('show');
+                hasErrors = true;
+            }
+
+            if (hasErrors) {
+                statusContainer.className = 'error';
+                statusContainer.textContent = 'Please correct the errors above before submitting.';
+                return;
+            }
+
             try {
                 // Disable button and show processing state
                 cardButton.disabled = true;
@@ -457,12 +521,12 @@
                     // Get customer information
                     const customerData = {
                         name: document.getElementById('name').value,
-                        email: document.getElementById('email').value,
-                        phone: document.getElementById('phone').value,
+                        email: email,
+                        phone: phone.replace(/\D/g, ''), // Store only digits
                         address: document.getElementById('address').value,
                         city: document.getElementById('city').value,
-                        state: document.getElementById('state').value,
-                        zip: document.getElementById('zip').value
+                        state: state,
+                        zip: zip
                     };
 
                     // Send payment to Netlify function
@@ -517,6 +581,7 @@
         // Initialize everything
         document.addEventListener('DOMContentLoaded', async function() {
             loadOrderData();
+            setupValidation();
             
             // Update cart count
             const cart = JSON.parse(localStorage.getItem('cart') || '[]');
