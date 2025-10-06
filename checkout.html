@@ -367,75 +367,89 @@
             return card;
         }
 
-        // Handle payment form submission
-        async function handlePaymentMethodSubmission(event, card) {
-            event.preventDefault();
+// Handle payment form submission
+async function handlePaymentMethodSubmission(event, card) {
+    event.preventDefault();
 
-            const cardButton = document.getElementById('card-button');
-            const statusContainer = document.getElementById('payment-status-container');
+    const cardButton = document.getElementById('card-button');
+    const statusContainer = document.getElementById('payment-status-container');
 
-            try {
-                // Disable button while processing
-                cardButton.disabled = true;
-                statusContainer.style.display = 'none';
+    try {
+        // Disable button while processing
+        cardButton.disabled = true;
+        statusContainer.style.display = 'none';
 
-                // Tokenize the card
-                const result = await card.tokenize();
-                if (result.status === 'OK') {
-                    // Get customer information
-                    const customerData = {
-                        name: document.getElementById('name').value,
-                        email: document.getElementById('email').value,
-                        phone: document.getElementById('phone').value,
-                        address: document.getElementById('address').value,
-                        city: document.getElementById('city').value,
-                        state: document.getElementById('state').value,
-                        zip: document.getElementById('zip').value
-                    };
+        // Tokenize the card
+        const result = await card.tokenize();
+        if (result.status === 'OK') {
+            // Get customer information
+            const customerData = {
+                name: document.getElementById('name').value,
+                email: document.getElementById('email').value,
+                phone: document.getElementById('phone').value,
+                address: document.getElementById('address').value,
+                city: document.getElementById('city').value,
+                state: document.getElementById('state').value,
+                zip: document.getElementById('zip').value
+            };
 
-                    // In production, you would send this to your server
-                    // For now, we'll simulate success
-                    console.log('Payment token:', result.token);
-                    console.log('Customer data:', customerData);
+            // Send payment to Netlify function
+            const paymentResponse = await fetch('/.netlify/functions/process-payment', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    sourceId: result.token,
+                    amount: 17500, // $175.00 in cents
+                    customerData: customerData
+                })
+            });
 
-                    // Store customer data
-                    const orderData = JSON.parse(localStorage.getItem('orderData') || '{}');
-                    orderData.customer = customerData;
-                    orderData.paymentToken = result.token;
-                    localStorage.setItem('orderData', JSON.stringify(orderData));
+            const paymentResult = await paymentResponse.json();
 
-                    // Show success message
-                    statusContainer.className = 'success';
-                    statusContainer.innerHTML = `
-                        <strong>Payment Successful!</strong><br>
-                        Your $175 deposit has been processed. We'll contact you shortly to confirm your installation.
-                    `;
+            if (paymentResult.success) {
+                // Store customer data
+                const orderData = JSON.parse(localStorage.getItem('orderData') || '{}');
+                orderData.customer = customerData;
+                orderData.paymentId = paymentResult.payment.id;
+                localStorage.setItem('orderData', JSON.stringify(orderData));
 
-                    // Redirect to confirmation page after delay
-                    setTimeout(() => {
-                        // Clear cart
-                        localStorage.removeItem('cart');
-                        alert('Thank you for your order! We will contact you shortly to confirm your installation details.');
-                        window.location.href = 'index.html';
-                    }, 3000);
+                // Show success message
+                statusContainer.className = 'success';
+                statusContainer.innerHTML = `
+                    <strong>Payment Successful!</strong><br>
+                    Your $175 deposit has been processed. We'll contact you shortly to confirm your installation.
+                `;
 
-                } else {
-                    let errorMessage = 'Payment failed. Please try again.';
-                    if (result.errors) {
-                        errorMessage = result.errors.map(error => error.message).join(', ');
-                    }
-                    
-                    statusContainer.className = 'error';
-                    statusContainer.textContent = errorMessage;
-                    cardButton.disabled = false;
-                }
-            } catch (e) {
-                console.error('Payment error:', e);
-                statusContainer.className = 'error';
-                statusContainer.textContent = 'An error occurred. Please try again.';
-                cardButton.disabled = false;
+                // Redirect to confirmation page after delay
+                setTimeout(() => {
+                    localStorage.removeItem('cart');
+                    alert('Thank you for your order! We will contact you shortly to confirm your installation details.');
+                    window.location.href = 'index.html';
+                }, 3000);
+
+            } else {
+                throw new Error(paymentResult.error || 'Payment failed');
             }
+
+        } else {
+            let errorMessage = 'Payment failed. Please try again.';
+            if (result.errors) {
+                errorMessage = result.errors.map(error => error.message).join(', ');
+            }
+            
+            statusContainer.className = 'error';
+            statusContainer.textContent = errorMessage;
+            cardButton.disabled = false;
         }
+    } catch (e) {
+        console.error('Payment error:', e);
+        statusContainer.className = 'error';
+        statusContainer.textContent = e.message || 'An error occurred. Please try again.';
+        cardButton.disabled = false;
+    }
+}
 
         // Initialize everything
         document.addEventListener('DOMContentLoaded', async function() {
