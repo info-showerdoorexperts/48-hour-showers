@@ -6,17 +6,11 @@
     <title>Checkout | 48 Hour Showers</title>
     <script type="text/javascript" src="https://sandbox.web.squarecdn.com/v1/square.js"></script>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
-            line-height: 1.6;
-            color: #1a1a1a;
-            background: #fafafa;
+            line-height: 1.6; color: #1a1a1a; background: #fafafa;
         }
 
         .nav {
@@ -24,269 +18,89 @@
             padding: 25px 40px;
             backdrop-filter: blur(10px);
             border-bottom: 1px solid #e5e5e5;
-            display: flex;
-            justify-content: center;
-            align-items: center;
+            display: flex; justify-content: center; align-items: center;
         }
 
-        .logo {
-            font-size: 22px;
-            font-weight: 600;
-            color: #1a1a1a;
-            letter-spacing: -0.5px;
-        }
+        .logo { font-size: 22px; font-weight: 600; color: #1a1a1a; letter-spacing: -0.5px; }
+        .logo span { color: #2d5f4f; }
 
-        .logo span {
-            color: #2d5f4f;
-        }
-
-        .nav-links {
-            display: flex;
-            gap: 45px;
-            list-style: none;
-            align-items: center;
-        }
-
+        .nav-links { display: flex; gap: 45px; list-style: none; align-items: center; }
         .nav-links a {
-            color: #4a4a4a;
-            text-decoration: none;
-            font-weight: 500;
-            font-size: 15px;
-            transition: color 0.3s;
-            letter-spacing: 0.3px;
+            color: #4a4a4a; text-decoration: none; font-weight: 500; font-size: 15px;
+            transition: color 0.3s; letter-spacing: 0.3px;
         }
-
-        .nav-links a:hover {
-            color: #2d5f4f;
-        }
+        .nav-links a:hover { color: #2d5f4f; }
 
         .cart-icon {
-            position: relative;
-            cursor: pointer;
-            padding: 8px 16px;
-            border: 1px solid #e5e5e5;
-            border-radius: 6px;
-            transition: all 0.3s;
-            font-size: 14px;
-            color: #1a1a1a;
+            position: relative; cursor: pointer; padding: 8px 16px;
+            border: 1px solid #e5e5e5; border-radius: 6px; transition: all 0.3s;
+            font-size: 14px; color: #1a1a1a;
         }
-
-        .cart-icon:hover {
-            border-color: #1a1a1a;
-            background: #fafafa;
-        }
-
+        .cart-icon:hover { border-color: #1a1a1a; background: #fafafa; }
         .cart-count {
-            position: absolute;
-            top: -6px;
-            right: -6px;
-            background: #1a1a1a;
-            color: white;
-            border-radius: 10px;
-            padding: 2px 6px;
-            font-size: 11px;
-            font-weight: 600;
+            position: absolute; top: -6px; right: -6px; background: #1a1a1a; color: white;
+            border-radius: 10px; padding: 2px 6px; font-size: 11px; font-weight: 600;
         }
 
-        .checkout-container {
-            max-width: 800px;
-            margin: 60px auto;
-            padding: 0 40px;
-        }
-
+        .checkout-container { max-width: 800px; margin: 60px auto; padding: 0 40px; }
         .checkout-card {
-            background: white;
-            border-radius: 8px;
-            padding: 40px;
-            border: 1px solid #e5e5e5;
-            margin-bottom: 30px;
+            background: white; border-radius: 8px; padding: 40px;
+            border: 1px solid #e5e5e5; margin-bottom: 30px;
         }
 
-        .checkout-title {
-            font-size: 32px;
-            font-weight: 600;
-            margin-bottom: 30px;
-            letter-spacing: -1px;
-        }
+        .checkout-title { font-size: 32px; font-weight: 600; margin-bottom: 30px; letter-spacing: -1px; }
 
-        .order-summary {
-            background: #fafafa;
-            padding: 24px;
-            border-radius: 6px;
-            margin-bottom: 30px;
-        }
-
-        .summary-title {
-            font-size: 18px;
-            font-weight: 600;
-            margin-bottom: 16px;
-            color: #1a1a1a;
-        }
-
-        .summary-item {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 12px;
-            color: #4a4a4a;
-        }
-
+        .order-summary { background: #fafafa; padding: 24px; border-radius: 6px; margin-bottom: 30px; }
+        .summary-title { font-size: 18px; font-weight: 600; margin-bottom: 16px; color: #1a1a1a; }
+        .summary-item { display: flex; justify-content: space-between; margin-bottom: 12px; color: #4a4a4a; }
         .summary-item.total {
-            font-size: 20px;
-            font-weight: 600;
-            color: #1a1a1a;
-            padding-top: 16px;
-            border-top: 2px solid #e5e5e5;
-            margin-top: 16px;
+            font-size: 20px; font-weight: 600; color: #1a1a1a; padding-top: 16px; border-top: 2px solid #e5e5e5; margin-top: 16px;
         }
 
         .deposit-highlight {
-            background: #e8f5f1;
-            padding: 20px;
-            border-radius: 6px;
-            margin-bottom: 30px;
-            border-left: 4px solid #2d5f4f;
+            background: #e8f5f1; padding: 20px; border-radius: 6px; margin-bottom: 30px; border-left: 4px solid #2d5f4f;
         }
+        .deposit-highlight p { color: #1a1a1a; font-size: 15px; line-height: 1.6; }
+        .deposit-highlight strong { color: #2d5f4f; font-size: 18px; }
 
-        .deposit-highlight p {
-            color: #1a1a1a;
-            font-size: 15px;
-            line-height: 1.6;
-        }
-
-        .deposit-highlight strong {
-            color: #2d5f4f;
-            font-size: 18px;
-        }
-
-        .form-section {
-            margin-bottom: 30px;
-        }
-
-        .form-label {
-            display: block;
-            font-weight: 500;
-            margin-bottom: 8px;
-            color: #1a1a1a;
-        }
-
+        .form-section { margin-bottom: 30px; }
+        .form-label { display: block; font-weight: 500; margin-bottom: 8px; color: #1a1a1a; }
         .form-input {
-            width: 100%;
-            padding: 14px;
-            border: 1px solid #e5e5e5;
-            border-radius: 6px;
-            font-size: 15px;
-            font-family: inherit;
-            margin-bottom: 16px;
+            width: 100%; padding: 14px; border: 1px solid #e5e5e5; border-radius: 6px;
+            font-size: 15px; font-family: inherit; margin-bottom: 16px;
         }
+        .form-input:focus { outline: none; border-color: #2d5f4f; }
+        .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
 
-        .form-input:focus {
-            outline: none;
-            border-color: #2d5f4f;
-        }
+        #card-container { margin-bottom: 24px; }
 
-        .form-row {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 16px;
-        }
+        #payment-status-container { margin-top: 20px; padding: 16px; border-radius: 6px; display: none; }
+        #payment-status-container.success { background: #e8f5f1; border: 1px solid #2d5f4f; color: #1a1a1a; display: block; }
+        #payment-status-container.error { background: #fee; border: 1px solid #c00; color: #c00; display: block; }
 
-        #card-container {
-            margin-bottom: 24px;
-        }
-
-        #payment-status-container {
-            margin-top: 20px;
-            padding: 16px;
-            border-radius: 6px;
-            display: none;
-        }
-
-        #payment-status-container.success {
-            background: #e8f5f1;
-            border: 1px solid #2d5f4f;
-            color: #1a1a1a;
-            display: block;
-        }
-
-        #payment-status-container.error {
-            background: #fee;
-            border: 1px solid #c00;
-            color: #c00;
-            display: block;
-        }
+        .error-message { color: #c00; font-size: 13px; margin-top: -6px; margin-bottom: 12px; display: block; }
 
         .pay-button {
-            width: 100%;
-            background: #2d5f4f;
-            color: white;
-            padding: 18px;
-            font-size: 16px;
-            font-weight: 600;
-            border: none;
-            border-radius: 6px;
-            cursor: pointer;
-            transition: all 0.3s;
-            letter-spacing: 0.5px;
+            width: 100%; background: #2d5f4f; color: white; padding: 18px; font-size: 16px; font-weight: 600;
+            border: none; border-radius: 6px; cursor: pointer; transition: all 0.3s; letter-spacing: 0.5px;
         }
-
-        .pay-button:hover:not(:disabled) {
-            background: #234639;
-            transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(45, 95, 79, 0.3);
-        }
-
-        .pay-button:disabled {
-            background: #ccc;
-            cursor: not-allowed;
-        }
+        .pay-button:hover:not(:disabled) { background: #234639; transform: translateY(-2px); box-shadow: 0 8px 20px rgba(45,95,79,0.3); }
+        .pay-button:disabled { background: #ccc; cursor: not-allowed; }
 
         footer {
-            background: #1a1a1a;
-            color: #a0a0a0;
-            padding: 60px 40px;
-            text-align: center;
-            border-top: 1px solid #333;
-            margin-top: 100px;
+            background: #1a1a1a; color: #a0a0a0; padding: 60px 40px; text-align: center;
+            border-top: 1px solid #333; margin-top: 100px;
         }
+        footer p { margin-bottom: 8px; font-size: 14px; }
 
-        footer p {
-            margin-bottom: 8px;
-            font-size: 14px;
-        }
-
-        .scheduling-info {
-            background: #fafafa;
-            padding: 20px;
-            border-radius: 6px;
-            margin-bottom: 20px;
-        }
-
-        .scheduling-info h3 {
-            font-size: 16px;
-            font-weight: 600;
-            margin-bottom: 12px;
-            color: #1a1a1a;
-        }
-
-        .scheduling-info p {
-            color: #4a4a4a;
-            font-size: 14px;
-            margin-bottom: 8px;
-        }
+        .scheduling-info { background: #fafafa; padding: 20px; border-radius: 6px; margin-bottom: 20px; }
+        .scheduling-info h3 { font-size: 16px; font-weight: 600; margin-bottom: 12px; color: #1a1a1a; }
+        .scheduling-info p { color: #4a4a4a; font-size: 14px; margin-bottom: 8px; }
 
         @media (max-width: 768px) {
-            .checkout-container {
-                margin: 40px auto;
-                padding: 0 20px;
-            }
-
-            .checkout-card {
-                padding: 24px;
-            }
-
-            .form-row {
-                grid-template-columns: 1fr;
-            }
+            .checkout-container { margin: 40px auto; padding: 0 20px; }
+            .checkout-card { padding: 24px; }
+            .form-row { grid-template-columns: 1fr; }
         }
     </style>
 </head>
@@ -309,57 +123,66 @@
         <div class="checkout-card">
             <h1 class="checkout-title">Checkout</h1>
 
-            <div class="order-summary" id="orderSummary">
-                <!-- Order details will be inserted here -->
-            </div>
+            <div class="order-summary" id="orderSummary"></div>
 
             <div class="deposit-highlight">
                 <p><strong>Deposit Due Today: $175.00</strong></p>
                 <p>The remaining balance will be due after successful installation.</p>
             </div>
 
-            <div class="scheduling-info" id="schedulingInfo">
-                <!-- Scheduling info will be inserted here -->
-            </div>
+            <div class="scheduling-info" id="schedulingInfo"></div>
 
             <form id="payment-form">
+                <!-- Contact Information (cleaned) -->
                 <div class="form-section">
                     <h3 style="font-size: 20px; margin-bottom: 20px; font-weight: 600;">Contact Information</h3>
 
                     <label class="form-label" for="name">Full Name</label>
-                    <input type="text" id="name" class="form-input" required>
+                    <input type="text" id="name" class="form-input" autocomplete="name" required>
 
                     <label class="form-label" for="email">Email</label>
-                    <input type="email" id="email" class="form-input" required>
+                    <input type="email" id="email" class="form-input" autocomplete="email" required>
 
                     <label class="form-label" for="phone">Phone Number</label>
-                    <input type="tel" id="phone" class="form-input" required>
-                    <input type="tel" id="phone" class="form-input" placeholder="(555) 123-4567" required>
+                    <input
+                        type="tel"
+                        id="phone"
+                        class="form-input"
+                        placeholder="(555) 123-4567"
+                        inputmode="tel"
+                        autocomplete="tel"
+                        pattern="^\s*(?:\+?1[-.\s]?)?\(?([2-9][0-8][0-9])\)?[-.\s]?([2-9][0-9]{2})[-.\s]?([0-9]{4})\s*$"
+                        required
+                    >
                     <span class="error-message" id="phoneError"></span>
 
                     <label class="form-label" for="address">Installation Address</label>
-                    <input type="text" id="address" class="form-input" placeholder="Street Address" required>
+                    <input type="text" id="address" class="form-input" placeholder="Street Address" autocomplete="address-line1" required>
 
                     <div class="form-row">
-                        <input type="text" id="city" class="form-input" placeholder="City" required>
-                        <input type="text" id="state" class="form-input" placeholder="State" required>
-                        <div>
-                            <input type="text" id="city" class="form-input" placeholder="City" required>
-                        </div>
-                        <div>
-                            <select id="state" class="form-input" required>
-                                <option value="">Select State</option>
-                                <option value="MD">Maryland</option>
-                                <option value="PA">Pennsylvania</option>
-                                <option value="WV">West Virginia</option>
-                                <option value="VA">Virginia</option>
-                                <option value="DC">Washington DC</option>
-                            </select>
-                        </div>
+                        <input type="text" id="city" class="form-input" placeholder="City" autocomplete="address-level2" required>
+
+                        <select id="state" class="form-input" autocomplete="address-level1" required>
+                            <option value="">Select State</option>
+                            <option value="MD">Maryland</option>
+                            <option value="PA">Pennsylvania</option>
+                            <option value="WV">West Virginia</option>
+                            <option value="VA">Virginia</option>
+                            <option value="DC">Washington DC</option>
+                        </select>
                     </div>
 
-                    <input type="text" id="zip" class="form-input" placeholder="ZIP Code" required>
-                    <input type="text" id="zip" class="form-input" placeholder="ZIP Code" required maxlength="5" pattern="[0-9]{5}">
+                    <input
+                        type="text"
+                        id="zip"
+                        class="form-input"
+                        placeholder="ZIP Code"
+                        inputmode="numeric"
+                        autocomplete="postal-code"
+                        maxlength="10"
+                        pattern="^\d{5}(?:-\d{4})?$"
+                        required
+                    >
                     <span class="error-message" id="zipError"></span>
                 </div>
 
@@ -391,7 +214,7 @@
 
         let card;
 
-        // Load order data
+        // Order data into Summary & Scheduling blocks
         function loadOrderData() {
             const orderData = JSON.parse(localStorage.getItem('orderData') || '{}');
 
@@ -400,7 +223,6 @@
                 return;
             }
 
-            // Display order summary
             const summaryHTML = `
                 <h3 class="summary-title">Order Summary</h3>
                 ${orderData.cart.map(item => `
@@ -422,17 +244,25 @@
             `;
             document.getElementById('orderSummary').innerHTML = summaryHTML;
 
-            // Display scheduling info
             let schedulingHTML = '<h3>Installation Details</h3>';
-            if (orderData.scheduling.flexible) {
+            if (orderData.scheduling && orderData.scheduling.flexible) {
                 schedulingHTML += '<p><strong>Flexible Scheduling:</strong> We\'ll contact you within 48 hours to schedule your installation.</p>';
-            } else {
+            } else if (orderData.scheduling) {
                 const date = new Date(orderData.scheduling.date);
                 const dateStr = date.toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
                 const timeSlot = orderData.scheduling.time === 'morning' ? 'Morning (8 AM - 12 PM)' : 'Afternoon (12 PM - 4 PM)';
                 schedulingHTML += `<p><strong>Date:</strong> ${dateStr}</p><p><strong>Time:</strong> ${timeSlot}</p>`;
             }
             document.getElementById('schedulingInfo').innerHTML = schedulingHTML;
+        }
+
+        // --- Simple validators for phone & zip (US patterns) ---
+        function validatePhone(val) {
+            const re = /^\s*(?:\+?1[-.\s]?)?\(?([2-9][0-8][0-9])\)?[-.\s]?([2-9][0-9]{2})[-.\s]?([0-9]{4})\s*$/;
+            return re.test(String(val));
+        }
+        function validateZip(val) {
+            return /^\d{5}(?:-\d{4})?$/.test(String(val));
         }
 
         // Initialize Square payment form
@@ -446,11 +276,28 @@
         async function handlePaymentMethodSubmission(event, card) {
             event.preventDefault();
 
+            // Basic client-side validation for phone & ZIP before tokenizing
+            const phoneInput = document.getElementById('phone');
+            const zipInput   = document.getElementById('zip');
+            const phoneErr   = document.getElementById('phoneError');
+            const zipErr     = document.getElementById('zipError');
+            phoneErr.textContent = ''; zipErr.textContent = '';
+
+            if (!validatePhone(phoneInput.value)) {
+                phoneErr.textContent = 'Enter a valid US phone number (e.g., 555-123-4567).';
+                phoneInput.focus();
+                return;
+            }
+            if (!validateZip(zipInput.value)) {
+                zipErr.textContent = 'Enter a valid ZIP (12345 or 12345-6789).';
+                zipInput.focus();
+                return;
+            }
+
             const cardButton = document.getElementById('card-button');
             const statusContainer = document.getElementById('payment-status-container');
 
             try {
-                // Disable button and show processing state
                 cardButton.disabled = true;
                 cardButton.textContent = 'Processing Payment...';
                 statusContainer.style.display = 'none';
@@ -472,38 +319,29 @@
                     // Send payment to Netlify function
                     const paymentResponse = await fetch('/.netlify/functions/process-payment', {
                         method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                        },
+                        headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({
                             sourceId: result.token,
                             amount: 17500, // $175.00 in cents
-                            customerData: customerData
+                            customerData
                         })
                     });
 
                     const paymentResult = await paymentResponse.json();
 
                     if (paymentResult.success) {
-                        // Store customer data and payment info
                         const orderData = JSON.parse(localStorage.getItem('orderData') || '{}');
                         orderData.customer = customerData;
                         orderData.paymentId = paymentResult.payment.id;
                         localStorage.setItem('orderData', JSON.stringify(orderData));
 
-                        // Redirect to confirmation page
                         window.location.href = 'confirmation.html';
-
                     } else {
                         throw new Error(paymentResult.error || 'Payment failed');
                     }
-
                 } else {
                     let errorMessage = 'Payment failed. Please check your card details and try again.';
-                    if (result.errors) {
-                        errorMessage = result.errors.map(error => error.message).join(', ');
-                    }
-
+                    if (result.errors) errorMessage = result.errors.map(e => e.message).join(', ');
                     statusContainer.className = 'error';
                     statusContainer.textContent = errorMessage;
                     cardButton.disabled = false;
@@ -521,32 +359,26 @@
         // Initialize everything
         document.addEventListener('DOMContentLoaded', async function() {
             loadOrderData();
-            
+
             // Update cart count
             const cart = JSON.parse(localStorage.getItem('cart') || '[]');
             document.getElementById('cartCount').textContent = cart.length;
 
-            if (!window.Square) {
-                throw new Error('Square.js failed to load properly');
-            }
+            if (!window.Square) throw new Error('Square.js failed to load properly');
 
             let payments;
             try {
                 payments = window.Square.payments(appId, locationId);
             } catch(e) {
                 console.error('Square payments initialization failed:', e);
-                document.getElementById('payment-status-container').className = 'error';
-                document.getElementById('payment-status-container').textContent = 
-                    'Payment system failed to initialize. Please refresh the page or contact support.';
+                const el = document.getElementById('payment-status-container');
+                el.className = 'error';
+                el.textContent = 'Payment system failed to initialize. Please refresh the page or contact support.';
                 return;
             }
 
-            try {
-                card = await initializeCard(payments);
-            } catch (e) {
-                console.error('Card initialization failed:', e);
-                return;
-            }
+            try { card = await initializeCard(payments); }
+            catch (e) { console.error('Card initialization failed:', e); return; }
 
             const paymentForm = document.getElementById('payment-form');
             paymentForm.addEventListener('submit', async (event) => {
