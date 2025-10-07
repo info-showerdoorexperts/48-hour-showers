@@ -558,18 +558,25 @@
 
         // Update order summary
         function updateSummary() {
-            const subtotal = cart.reduce((sum, item) => sum + item.price, 0);
-            const total = subtotal - flexibleDiscount;
+          const subtotal = cart.reduce((sum, item) => sum + item.price, 0);
+          const total = subtotal - flexibleDiscount;
 
-            document.getElementById('subtotal').textContent = `$${subtotal}`;
-            document.getElementById('total').textContent = `$${total}`;
-            
-            const discountRow = document.getElementById('discountRow');
-            if (flexibleDiscount > 0) {
-                discountRow.style.display = 'flex';
-            } else {
-                discountRow.style.display = 'none';
-            }
+          document.getElementById('subtotal').textContent = `$${subtotal}`;
+          document.getElementById('total').textContent = `$${total}`;
+  
+          // Update the deposit amount dynamically: $175 per item
+          const depositAmount = 175 * cart.length;
+          const depositEl = document.querySelector('.deposit-info strong');
+          if (depositEl) {
+            depositEl.textContent = `Deposit Due Today: $${depositAmount}`;
+          }
+
+          const discountRow = document.getElementById('discountRow');
+          if (flexibleDiscount > 0) {
+            discountRow.style.display = 'flex';
+          } else {
+            discountRow.style.display = 'none';
+          }
         }
 
         // Proceed to checkout
@@ -589,7 +596,7 @@
                 discount: flexibleDiscount,
                 subtotal: cart.reduce((sum, item) => sum + item.price, 0),
                 total: cart.reduce((sum, item) => sum + item.price, 0) - flexibleDiscount,
-                deposit: 175
+                deposit: 175 * cart.length
             };
 
             localStorage.setItem('orderData', JSON.stringify(orderData));

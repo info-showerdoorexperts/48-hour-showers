@@ -306,14 +306,24 @@
                     };
 
                     // Send payment to Netlify function
+                    // Compute deposit based on number of cart items and send all item names
+                    const orderDetails = JSON.parse(localStorage.getItem('orderData') || '{}');
+                    const cartItems = Array.isArray(orderDetails?.cart) ? orderDetails.cart : [];
+                    const depositPerItemCents = 17500;
+                    const totalDepositCents = cartItems.length * depositPerItemCents;
+
+                    // Update button text while processing
+                    cardButton.textContent = `Processing $${(totalDepositCents / 100).toFixed(2)} Deposit...`;
+
                     const paymentResponse = await fetch('/.netlify/functions/process-payment', {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({
-                            sourceId: result.token,
-                            amount: 17500, // $175.00 in cents
-                            customerData
-                        })
+                      method: 'POST',
+                      headers: { 'Content-Type': 'application/json' },
+                      body: JSON.stringify({
+                        sourceId: result.token,
+                        amount: totalDepositCents, // dynamic
+                        customerData,
+                        orderDetails
+                      })
                     });
 
                     const paymentResult = await paymentResponse.json();

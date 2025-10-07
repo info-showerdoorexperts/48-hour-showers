@@ -231,7 +231,7 @@
         <div class="details-card">
             <h2 class="section-title">Payment Information</h2>
             <div class="highlight-box">
-                <p><strong>Deposit Paid: $175.00</strong></p>
+                <p><strong>Deposit Paid: <span id="depositPaid">$175.00</span></strong></p>
                 <p>Remaining balance of <strong id="remainingBalance"></strong> due after successful installation.</p>
             </div>
             <div class="detail-row">
@@ -311,8 +311,19 @@
             }
 
             // Display totals
-            document.getElementById('totalAmount').textContent = `$${orderData.total}`;
-            document.getElementById('remainingBalance').textContent = `$${orderData.total - 175}`;
+            const toMoney = (n) => `$${Number(n).toFixed(2)}`;
+            document.getElementById('totalAmount').textContent = toMoney(orderData.total);
+
+            // ✅ Deposit & remaining balance (dynamic)
+            const itemsCount = Array.isArray(orderData.cart) ? orderData.cart.length : 0;
+            const computedDeposit = 175 * itemsCount;
+            const deposit = (typeof orderData.deposit === 'number' && orderData.deposit > 0)
+              ? orderData.deposit
+              : computedDeposit;
+
+            const remaining = Math.max(0, Number(orderData.total) - Number(deposit));
+            document.getElementById('depositPaid').textContent = toMoney(deposit);
+            document.getElementById('remainingBalance').textContent = toMoney(remaining);
 
             // Display payment ID
             const paymentId = orderData.paymentId || 'Processing...';

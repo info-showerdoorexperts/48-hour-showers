@@ -9,36 +9,37 @@ exports.handler = async (event, context) => {
   }
 
   try {
-    // Parse body
     const { sourceId, amount, customerData, orderDetails } = JSON.parse(event.body);
 
-    // ✅ Get door/product name dynamically (fallback to "Shower Door")
-    const productName =
-      orderDetails?.cart?.[0]?.name?.trim() || "Shower Door";
+    // --- Build dynamic note and reliable amount ---
+    const items = Array.isArray(orderDetails?.cart) ? orderDetails.cart : [];
+    const itemNames = items.map(i => (i?.name || 'Shower Door').trim()).filter(Boolean);
+    const namesForNote = itemNames.length ? itemNames.join(', ') : 'Shower Door';
 
-    const note = `${productName} deposit - ${customerData.name}`;
+    const DEPOSIT_PER_ITEM_CENTS = 17500;
+    const computedAmount = BigInt((items.length || 1) * DEPOSIT_PER_ITEM_CENTS);
+    const amountToCharge = (typeof amount === 'number' && amount > 0)
+      ? BigInt(amount)
+      : computedAmount;
 
-    // Initialize Square client
     const client = new Client({
       accessToken: process.env.SQUARE_ACCESS_TOKEN,
       environment: Environment.Sandbox
     });
 
-    // Create payment
     const { result } = await client.paymentsApi.createPayment({
-      sourceId: sourceId,
+      sourceId,
       idempotencyKey: Date.now().toString() + Math.random().toString(36),
       amountMoney: {
-        amount: BigInt(amount),
+        amount: amountToCharge,
         currency: 'USD'
       },
       locationId: process.env.SQUARE_LOCATION_ID,
-      // Use dynamic product-specific note
-      note,
+      note: `${namesForNote} deposit - ${customerData.name}`,
       buyerEmailAddress: customerData.email
     });
 
-    // Convert BigInt values to strings for JSON serialization
+    // --- Sanitize BigInt for JSON ---
     const paymentData = {
       id: result.payment.id,
       status: result.payment.status,
@@ -46,7 +47,6 @@ exports.handler = async (event, context) => {
       createdAt: result.payment.createdAt
     };
 
-    // Return success
     return {
       statusCode: 200,
       headers: {
@@ -62,7 +62,6 @@ exports.handler = async (event, context) => {
 
   } catch (error) {
     console.error('Payment error:', error);
-    
     return {
       statusCode: 400,
       headers: {
