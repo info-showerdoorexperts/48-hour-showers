@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
+<meta name="description" content="Stock shower doors professionally installed in 48 hours — fast, affordable, and convenient.">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Shopping Cart | 48 Hour Showers</title>
@@ -371,16 +371,10 @@
             }
         }
     </style>
+
+<head>
+  <script src="assets/js/header.js" defer></script>
 </head>
-<body>
-    <nav class="nav">
-        <div class="logo" onclick="window.location.href='index.html'">48 HOUR <span>SHOWERS</span></div>
-        <ul class="nav-links">
-            <li><a href="index.html">Home</a></li>
-            <li><a href="index.html#products">Products</a></li>
-            <li><a href="index.html#about">About</a></li>
-        </ul>
-    </nav>
 
     <div class="cart-container">
         <div>
@@ -504,6 +498,8 @@
             cart.splice(index, 1);
             localStorage.setItem('cart', JSON.stringify(cart));
             loadCart();
+
+            document.dispatchEvent(new Event('cart:updated'));
         }
 
         // Toggle flexible scheduling
@@ -612,6 +608,8 @@
         // Initialize
         setMinDate();
         loadCart();
+
+        document.dispatchEvent(new Event('cart:updated'));
     </script>
-</body>
+
 </html>

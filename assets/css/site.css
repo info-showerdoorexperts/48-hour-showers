@@ -1,0 +1,51 @@
+/* ==== 48 Hour Showers – Shared Styles (site.css) ==== */
+*{box-sizing:border-box}
+:root{
+  --bg:#ffffff;
+  --text:#1a1a1a;
+  --muted:#4a4a4a;
+  --brand:#2d5f4f;
+  --brand-2:#1f463a;
+  --border:#e5e5e5;
+}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Oxygen,Ubuntu,sans-serif;line-height:1.6}
+/* Header */
+.nav{
+  position:sticky; top:0; z-index:50;
+  background:rgba(255,255,255,.98);
+  padding:20px 32px;
+  backdrop-filter:blur(10px);
+  border-bottom:1px solid var(--border);
+  display:flex; align-items:center; justify-content:center;
+}
+.nav .container{width:100%; max-width:1200px; display:flex; align-items:center; justify-content:space-between; gap:24px}
+.logo{font-size:22px; font-weight:700; letter-spacing:-.3px; cursor:pointer; color:var(--text)}
+.logo span{color:var(--brand)}
+.nav-links{display:flex; gap:36px; list-style:none; align-items:center; padding:0; margin:0}
+.nav-links a{color:var(--muted); text-decoration:none; font-weight:500; font-size:15px; letter-spacing:.2px; transition:color .2s ease}
+.nav-links a:hover,.nav-links a:focus{color:var(--brand)}
+.cart-icon{cursor:pointer; font-weight:600}
+.cart-count{display:inline-flex; align-items:center; justify-content:center; min-width:22px; height:22px; padding:0 6px; border-radius:999px; border:1px solid var(--border)}
+
+/* Buttons */
+.btn{display:inline-flex; align-items:center; justify-content:center; gap:.5rem; padding:12px 18px; border-radius:12px; border:1px solid var(--border); text-decoration:none; font-weight:600}
+.btn-primary{background:var(--brand); color:white; border-color:transparent}
+.btn-primary:hover{background:var(--brand-2)}
+.btn-ghost{background:transparent; color:var(--text)}
+
+/* Layout helpers */
+.container{width:100%; max-width:1200px; margin:0 auto; padding:0 20px}
+.section{padding:56px 0}
+.muted{color:var(--muted)}
+
+/* Checkout progress (optional) */
+.progress{display:flex; gap:12px; align-items:center; margin:16px 0 0}
+.progress .dot{width:10px; height:10px; border-radius:999px; background:var(--border)}
+.progress .dot.active{background:var(--brand)}
+/* Forms */
+input,select,textarea{width:100%; padding:12px 14px; border:1px solid var(--border); border-radius:10px; font:inherit}
+label{font-weight:600; margin-bottom:6px; display:block}
+.form-row{display:grid; gap:16px}
+@media (min-width: 720px){ .form-row.two{grid-template-columns:1fr 1fr} }
+/* Footer (if any) */
+footer{border-top:1px solid var(--border); padding:36px 0; margin-top:56px}
