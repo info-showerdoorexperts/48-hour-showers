@@ -9,13 +9,22 @@ exports.handler = async (event, context) => {
   }
 
   try {
-    const { sourceId, amount, customerData } = JSON.parse(event.body);
+    // Parse body
+    const { sourceId, amount, customerData, orderDetails } = JSON.parse(event.body);
 
+    // ✅ Get door/product name dynamically (fallback to "Shower Door")
+    const productName =
+      orderDetails?.cart?.[0]?.name?.trim() || "Shower Door";
+
+    const note = `${productName} deposit - ${customerData.name}`;
+
+    // Initialize Square client
     const client = new Client({
       accessToken: process.env.SQUARE_ACCESS_TOKEN,
       environment: Environment.Sandbox
     });
 
+    // Create payment
     const { result } = await client.paymentsApi.createPayment({
       sourceId: sourceId,
       idempotencyKey: Date.now().toString() + Math.random().toString(36),
@@ -24,7 +33,8 @@ exports.handler = async (event, context) => {
         currency: 'USD'
       },
       locationId: process.env.SQUARE_LOCATION_ID,
-      note: `Shower door deposit - ${customerData.name}`,
+      // Use dynamic product-specific note
+      note,
       buyerEmailAddress: customerData.email
     });
 
@@ -36,6 +46,7 @@ exports.handler = async (event, context) => {
       createdAt: result.payment.createdAt
     };
 
+    // Return success
     return {
       statusCode: 200,
       headers: {
